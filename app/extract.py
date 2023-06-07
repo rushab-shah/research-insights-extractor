@@ -24,6 +24,7 @@ def extract_features(filepath):
     parsed_data = load_parsed_data(filepath)
     result = []
     for paper in parsed_data:
+        print("Processing paper "+str(paper))
         paper_features = {
             "name":str(paper),
             "features":[]
@@ -42,10 +43,10 @@ def make_api_calls(paper_name,parsed_data):
     prompt = get_prompt()
     paper_chunk_data = parsed_data[paper_name]
     features = []
-    messages = []
     # count = 0
     no_of_chunks = len(paper_chunk_data)
     for i in range(0,no_of_chunks):
+        messages = []
         # count+=1
         # if count==1:
         message_obj = {"role": "user", "content":prompt+preprocess_prompt(paper_chunk_data[i])}
@@ -64,7 +65,7 @@ def make_api_calls(paper_name,parsed_data):
         if response.status_code==200:
             # print(response.json())
             response_obj = response.json()
-            features.append(response_obj["choices"][0]["message"]["content"])
+            features.append(json.loads(response_obj["choices"][0]["message"]["content"]))
         else:
             print(response.json())
             print(response.status_code)
