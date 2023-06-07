@@ -4,6 +4,7 @@ Code: extract.py
 Purpose: To make API calls to gpt for all the chunks of given text and extract key features
 '''
 import requests
+import json
 
 ##########
 API_KEY = ""
@@ -14,46 +15,70 @@ HEADERS = {'Authorization': 'Bearer '+API_KEY,'Accept':'application/json','Conte
 OUTPUT_PATH = "../output/"
 PROMPT_PATH = "../prompts/"
 TEXT_MODEL = "gpt-3.5-turbo"
+PARSED_DATA = {}
 
-def extract_features(chunks):
+def extract_features(filepath):
     """
     TODO
     """
-    print("Making API calls to gpt")
-    prompt = get_prompt()
+    print("Starting to extract features")
+    load_parsed_data(filepath)
     result = []
-    research_paper_features = []
-    messages = []
-    count = 0
-    ind = 0
-    length = len(chunks)
-    print(length)
-    for ind in range(0,1):
-        count+=1
-        if count==1:
-            message_obj = {"role": "user", "content":prompt+preprocess_prompt(chunks[len(chunks)-2])}
-        else:
-            message_obj = {"role": "user", "content":preprocess_prompt(chunks[len(chunks)-2])}
-        messages.append(message_obj)
-    request_body = {
-        "model": TEXT_MODEL,
-        "messages": messages
-    }
-    try:
-        response = requests.post(URL, headers=HEADERS, json=request_body, timeout=300)
-    except requests.exceptions.RequestException as ex:
-        error_message = str(ex)  # Extract the error message from the exception
-        print("Request failed with error:", error_message)
-    if response.status_code==200:
-        print(response.json())
-        response_obj = response.json()
-        result.append(response_obj["choices"][0]["message"]["content"])
-    else:
-        print(response.json())
-        print(response.status_code)
+    for paper in PARSED_DATA:
+        paper_features = {
+            "name":str(paper),
+            "features":[]
+        }
+        ## PROCESS
+        paper_features["features"] = make_api_calls(paper)
+        result.append(paper_features)
+    print("Features extracted. Saving output as JSON")
     write_result(result)
-    return
 
+def make_api_calls(paper_name):
+    """
+    Method to process and make API calls
+    """
+    print("Started making API calls for "+str(paper_name))
+    prompt = get_prompt()
+    paper_chunk_data = PARSED_DATA[paper_name]
+    features = []
+    messages = []
+    # count = 0
+    no_of_chunks = len(paper_chunk_data)
+    for i in range(0,no_of_chunks):
+        # count+=1
+        # if count==1:
+        message_obj = {"role": "user", "content":prompt+preprocess_prompt(paper_chunk_data[i])}
+        # else:
+        #     message_obj = {"role": "user", "content":preprocess_prompt(paper_chunk_data[i])}
+        messages.append(message_obj)
+        request_body = {
+            "model": TEXT_MODEL,
+            "messages": messages
+        }
+        try:
+            response = requests.post(URL, headers=HEADERS, json=request_body, timeout=180)
+        except requests.exceptions.RequestException as ex:
+            error_message = str(ex)  # Extract the error message from the exception
+            print("Request failed with error:", error_message)
+        if response.status_code==200:
+            # print(response.json())
+            response_obj = response.json()
+            features.append(response_obj["choices"][0]["message"]["content"])
+        else:
+            print(response.json())
+            print(response.status_code)
+    print("All features extracted for "+str(paper_name))
+    return features
+
+def load_parsed_data(filepath):
+    """
+    Method to read the json file containing a map of research paper title to its text chunk data
+    """
+    with open(filepath,'r') as file_obj:
+        data = file_obj.read()
+    PARSED_DATA = json.loads(data)
 
 def get_prompt():
     """
@@ -75,8 +100,6 @@ def write_result(result):
     """
     Storing result
     """
-    print("Storing result")
     with open(OUTPUT_PATH+'output.json','w') as file_object:
-        for res in result:
-            file_object.write(res)
+        file_object.write(result)
     print("Done!")
