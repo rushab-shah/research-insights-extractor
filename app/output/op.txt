@@ -1,0 +1,62 @@
+[{
+    "name": "Conclusion",
+    "value": "The frequent use of perineal talcum powder use is associated with increased risk of ovarian cancer.",
+    "mandatory": true,
+    "score": 0.9
+}, {
+    "name": "No. of subjects",
+    "value": "Data not available",
+    "mandatory": true,
+    "score": 0.5
+}, {
+    "name": "Relative risk",
+    "value": "Data not available",
+    "mandatory": true,
+    "score": 0.5
+}, {
+    "name": "Length of follow",
+    "value": "Data not available",
+    "mandatory": true,
+    "score": 0.5
+}, {
+    "name": "Quality of studies",
+    "value": "High",
+    "mandatory": false,
+    "score": 0.8
+}, {
+    "name": "Limitations",
+    "value": "Exclusion of cohort and case-control studies with frequent-use patients that did not explicitly capture information on weekly/daily talcum powder exposure; Differences in definition of talcum powder use between case-control and cohort studies; Small inclusion of cornstarch (estimated at 1.5%)",
+    "mandatory": false,
+    "score": 0.7
+}, {
+    "name": "Adjustment for covariates",
+    "value": "Included studies were adjusted for multiple covariates.",
+    "mandatory": false,
+    "score": 0.6
+}, {
+    "name": "Supplementary Information availability",
+    "value": "Available",
+    "mandatory": false,
+    "score": 0.4
+}, {
+    "name": "Author affiliation",
+    "value": "Department of Radiology and Biomedical Imaging, University of California San Francisco, San Francisco, CA, USA",
+    "mandatory": false,
+    "score": 0.5
+}, {
+    "name": "Acknowledgements",
+    "value": "Literature review provided by Evans Whitaker, MD MLIS; data provided by Katie O’Brien, PhD",
+    "mandatory": false,
+    "score": 0.6
+}, {
+    "name": "Conflict of Interest",
+    "value": "Sean Woolen: No relevant disclosures. Ann A Lazar: No relevant disclosures. Rebecca Smith-Bindman: Served as a paid expert witness for the plaintiffs in the talcum powder litigation.",
+    "mandatory": false,
+    "score": 0.6
+}, {
+    "name": "References",
+    "value": "1. O'Brien KM, Tworoger SS, Harris HR, et al. Association of Powder Use in the Genital Area With Risk of Ovarian Cancer...",
+    "mandatory": false,
+    "score": 0.5
+}]
+

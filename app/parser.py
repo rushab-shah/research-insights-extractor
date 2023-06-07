@@ -4,10 +4,11 @@ Code: parser.py
 Purpose: To read PDF files and extract text out of it and return it in a structured format
 '''
 from pdfminer.high_level import extract_text
+from extract import extract_features
 
 RAWDATA_PATH = "../datasources/raw-data"
 PROCESSED_DATA_PATH = "../datasources/processed-data"
-CHUNK_SIZE = 3000
+CHUNK_SIZE = 6000
 # SECTIONS = ["ABSTRACT", "INTRODUCTION", "METHODOLOGY", "RESULTS", "DISCUSSION", "CONCLUSIONS"]
 
 def parse(filename):
@@ -16,6 +17,7 @@ def parse(filename):
     """
     print("Parsing...")
     data = extract_text(RAWDATA_PATH+"/"+filename)
+    data = data.strip().replace('\n', '\\n').replace('"', '\\"')
     break_into_chunks(data)
 
 # def extract_sections_from_text(pdf_string):
@@ -44,7 +46,7 @@ def save_to_txt(chunks):
             file_object.write("Chunk "+str(count)+"\n\n")
             file_object.write(chunk)
             file_object.write("\n\n")
-    print("Data is ready")
+    extract_features(chunks)
 
 
 def main():
