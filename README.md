@@ -11,9 +11,25 @@ Before you begin, ensure you have met the following requirements:
 ## Installation
 1. Clone the repository
 
-2. Change directory
+2. Navigate to the project directory
 
-3. Install the required packages
+3. Set Up a Virtual Environment
+
+    - Before installing the project dependencies, it's recommended to set up a virtual environment. This helps to keep the dependencies required by different projects separate from each other, and also aligns with best practices for Python development.
+
+    - Here's how you can set up a virtual environment for this project:
+
+    - Using venv (included in standard Python 3)
+
+    - If you're using a standard installation of Python 3, you already have the `venv` module for creating virtual environments. Here's how you use it:
+
+        1. Navigate to the project directory in your terminal.
+        2. Create a new virtual environment named 'env' (or another name of your choosing) using the following command:
+        
+        ```bash
+        python3 -m venv env
+
+4. Install the required packages
     pip install -r requirements.txt
 
 
