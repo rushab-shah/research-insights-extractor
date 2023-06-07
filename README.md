@@ -30,6 +30,7 @@ Before you begin, ensure you have met the following requirements:
         python3 -m venv env
 
 4. Install the required packages
+    ```bash
     pip install -r requirements.txt
 
 
@@ -37,6 +38,7 @@ Before you begin, ensure you have met the following requirements:
 1. Place your PDF files in the `datasources/raw-data` directory.
 2. Run the `parser.py` script to parse the PDF and break it down into manageable chunks. This will also save the parsed text into a local text file.
 
+    ```bash
     python parser.py
 
 3. This script makes API calls to OpenAI's GPT model for each chunk of text and writes the result in the `output` directory.
