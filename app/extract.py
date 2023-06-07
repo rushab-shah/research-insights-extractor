@@ -11,7 +11,7 @@ API_KEY = ""
 
 URL="https://api.openai.com/v1/chat/completions"
 HEADERS = {'Authorization': 'Bearer '+API_KEY,'Accept':'application/json','Content-Type':'application/json'}
-OUTPUT_PATH = "./output/"
+OUTPUT_PATH = "../output/"
 PROMPT_PATH = "../prompts/"
 TEXT_MODEL = "gpt-3.5-turbo"
 
@@ -22,6 +22,7 @@ def extract_features(chunks):
     print("Making API calls to gpt")
     prompt = get_prompt()
     result = []
+    research_paper_features = []
     messages = []
     count = 0
     ind = 0
@@ -75,7 +76,7 @@ def write_result(result):
     Storing result
     """
     print("Storing result")
-    with open(OUTPUT_PATH+'op.txt','w') as file_object:
+    with open(OUTPUT_PATH+'output.json','w') as file_object:
         for res in result:
-            file_object.write(res+"\n\n")
+            file_object.write(res)
     print("Done!")
