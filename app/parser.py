@@ -5,6 +5,7 @@ Purpose: To read PDF files and extract text out of it and return it in a structu
 '''
 import glob
 import os
+import json
 from pdfminer.high_level import extract_text
 from extract import extract_features
 
@@ -53,7 +54,7 @@ def save_to_txt():
     Save the parsed pdf text into a local text file
     """
     with open(PROCESSED_DATA_PATH+PROCESSED_FILE_NAME,'w') as file_object:
-        file_object.write(PDF_TEXT_MAP)
+        file_object.write(json.dumps(PDF_TEXT_MAP))
     print("Preprocessed data stored")
 
 def get_paper_list():

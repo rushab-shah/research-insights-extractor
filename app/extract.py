@@ -7,7 +7,7 @@ import requests
 import json
 
 ##########
-API_KEY = ""
+API_KEY = "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"
 ##########
 
 URL="https://api.openai.com/v1/chat/completions"
@@ -15,33 +15,32 @@ HEADERS = {'Authorization': 'Bearer '+API_KEY,'Accept':'application/json','Conte
 OUTPUT_PATH = "../output/"
 PROMPT_PATH = "../prompts/"
 TEXT_MODEL = "gpt-3.5-turbo"
-PARSED_DATA = {}
 
 def extract_features(filepath):
     """
     TODO
     """
     print("Starting to extract features")
-    load_parsed_data(filepath)
+    parsed_data = load_parsed_data(filepath)
     result = []
-    for paper in PARSED_DATA:
+    for paper in parsed_data:
         paper_features = {
             "name":str(paper),
             "features":[]
         }
         ## PROCESS
-        paper_features["features"] = make_api_calls(paper)
+        paper_features["features"] = make_api_calls(paper,parsed_data)
         result.append(paper_features)
     print("Features extracted. Saving output as JSON")
     write_result(result)
 
-def make_api_calls(paper_name):
+def make_api_calls(paper_name,parsed_data):
     """
     Method to process and make API calls
     """
     print("Started making API calls for "+str(paper_name))
     prompt = get_prompt()
-    paper_chunk_data = PARSED_DATA[paper_name]
+    paper_chunk_data = parsed_data[paper_name]
     features = []
     messages = []
     # count = 0
@@ -76,9 +75,11 @@ def load_parsed_data(filepath):
     """
     Method to read the json file containing a map of research paper title to its text chunk data
     """
+    parsed_data={}
     with open(filepath,'r') as file_obj:
         data = file_obj.read()
-    PARSED_DATA = json.loads(data)
+    parsed_data = json.loads(data)
+    return parsed_data
 
 def get_prompt():
     """
@@ -101,5 +102,5 @@ def write_result(result):
     Storing result
     """
     with open(OUTPUT_PATH+'output.json','w') as file_object:
-        file_object.write(result)
+        file_object.write(json.dumps(result))
     print("Done!")
