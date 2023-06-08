@@ -13,6 +13,7 @@ API_KEY = "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"
 URL="https://api.openai.com/v1/chat/completions"
 HEADERS = {'Authorization': 'Bearer '+API_KEY,'Accept':'application/json','Content-Type':'application/json'}
 OUTPUT_PATH = "../output/"
+UI_CONSUMPTION_PATH = "../UI/src/"
 PROMPT_PATH = "../prompts/"
 TEXT_MODEL = "gpt-3.5-turbo"
 
@@ -65,6 +66,8 @@ def make_api_calls(paper_name,parsed_data):
         if response.status_code==200:
             # print(response.json())
             response_obj = response.json()
+            # Modify code to extract JSON from response_obj["choices"][0]["message"]["content"]
+            # You might have to parse the string to find where the JSON starts
             features.append(json.loads(response_obj["choices"][0]["message"]["content"]))
         else:
             print(response.json())
@@ -103,5 +106,7 @@ def write_result(result):
     Storing result
     """
     with open(OUTPUT_PATH+'output.json','w') as file_object:
+        file_object.write(json.dumps(result))
+    with open(UI_CONSUMPTION_PATH+'output.json','w') as file_object:
         file_object.write(json.dumps(result))
     print("Done!")
