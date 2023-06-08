@@ -1,31 +1,43 @@
 // PaperCard.js
 
 import React from 'react';
-import { Card, CardHeader, CardContent, Typography } from '@material-ui/core';
+import { Card, CardHeader, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const PaperCard = ({ paper, expanded, onExpandClick }) => {
+const useStyles = makeStyles((theme) => ({
+    appBar: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.primary,
+    },
+    title: {
+      fontFamily: "'Fira Sans', sans-serif",
+      fontWeight: 600,
+      marginBottom: theme.spacing(2),
+    },
+    card: {
+      backgroundColor: "#d0eeee", // This sets the unique color to each card
+      marginBottom: '1rem', 
+      cursor: 'pointer',
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)", // This adds a shadow to the card
+      '&:hover': {
+        boxShadow: "0px 6px 6px rgba(0, 0, 0, 0.25)", // This changes the shadow when you hover over the card
+      }
+    },
+    content: {
+      fontFamily: "'Fira Sans', sans-serif",
+    }
+  }));
+
+const PaperCard = ({ paper, onClick, color }) => {
+    const classes = useStyles({ color });
+
     return (
-        <div onClick={onExpandClick}>
-            <Card style={{ marginBottom: '1rem', cursor: 'pointer' }}>
-                <CardHeader title={paper.name} />
-                {expanded && (
-                    <CardContent>
-                    <Typography variant="h6">Features</Typography>
-                    {paper.features.map((featureGroup, groupIndex) => (
-                      <div key={groupIndex}>
-                        <ul>
-                          {featureGroup.map((feature, featureIndex) => (
-                            <li key={featureIndex}>
-                              <Typography variant="body1">
-                               <b>{feature.name}</b>: {feature.value}
-                              </Typography>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </CardContent>                  
-                )}
+        <div onClick={onClick}>
+            <Card className={classes.card}>
+                <CardHeader 
+                    title={<Typography variant="h6" className={classes.header}>{paper.name}</Typography>} 
+                />
             </Card>
         </div>
     );

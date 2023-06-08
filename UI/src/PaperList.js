@@ -1,28 +1,64 @@
-// PaperList.js
-
-import React, { useState } from 'react';
+import React from 'react';
 import PaperCard from './PaperCard';
-import { Container } from '@material-ui/core';
+import { Grid, Dialog, DialogTitle, DialogContent, Typography } from '@material-ui/core';  
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const PaperList = ({ papers }) => {
-    const [expandedPaper, setExpandedPaper] = useState(-1);
+    const [selectedPaper, setSelectedPaper] = React.useState(null);
+    const [open, setOpen] = React.useState(false);
 
-    const handleExpandClick = (paperId) => {
-        setExpandedPaper(expandedPaper === paperId ? -1 : paperId);
-    }
+    const handleCardClick = (paper) => {
+        setSelectedPaper(paper);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setSelectedPaper(null);
+        setOpen(false);
+    };
 
     return (
-        <Container maxWidth="sm">
-            {papers.map(paper => (
-                <PaperCard 
-                  key={paper.name} 
-                  paper={paper} 
-                  expanded={expandedPaper === paper.name} 
-                  onExpandClick={() => handleExpandClick(paper.name)} 
-                />
+        <Grid container spacing={3}>   
+            {papers.map((paper) => (
+                <Grid item xs={12} sm={6} md={4} key={paper.name}>
+                    <PaperCard
+                        paper={paper}
+                        onClick={() => handleCardClick(paper)}
+                    />
+                </Grid>
             ))}
-        </Container>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="paper-dialog-title"
+                aria-describedby="paper-dialog-description"
+            >
+                <DialogTitle id="paper-dialog-title">{selectedPaper?.name}
+                <IconButton aria-label="close" onClick={handleClose}>
+            <CloseIcon />
+          </IconButton></DialogTitle>
+                <DialogContent>
+                    <Typography variant="h6">Features</Typography>
+                    {selectedPaper?.features.map((featureGroup, groupIndex) => (
+                        <div key={groupIndex}>
+                            <ul>
+                            {featureGroup.map((feature, featureIndex) => (
+                                <li key={`${groupIndex}-${featureIndex}`}>
+                                    {feature.value && (
+                                    <Typography variant="body1">
+                                        <b>{feature.name}</b>: {feature.value}
+                                    </Typography>
+                                    )}
+                                </li>
+                            ))}
+                            </ul>
+                        </div>
+                    ))}
+                </DialogContent>
+            </Dialog>
+        </Grid>
     );
-}
+};
 
 export default PaperList;
