@@ -35,26 +35,31 @@ const PaperList = ({ papers }) => {
                 aria-describedby="paper-dialog-description"
             >
                 <DialogTitle id="paper-dialog-title">{selectedPaper?.name}
-                <IconButton aria-label="close" onClick={handleClose}>
-            <CloseIcon />
-          </IconButton></DialogTitle>
+                    <IconButton aria-label="close" onClick={handleClose}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent>
                     <Typography variant="h6">Features</Typography>
-                    {selectedPaper?.features.map((featureGroup, groupIndex) => (
-                        <div key={groupIndex}>
-                            <ul>
-                            {featureGroup.map((feature, featureIndex) => (
-                                <li key={`${groupIndex}-${featureIndex}`}>
-                                    {feature.value && (
-                                    <Typography variant="body1">
-                                        <b>{feature.name}</b>: {feature.value}
-                                    </Typography>
-                                    )}
-                                </li>
-                            ))}
-                            </ul>
-                        </div>
-                    ))}
+                    {selectedPaper?.features && selectedPaper.features.length > 0 ? (
+                        selectedPaper.features.map((featureGroup, groupIndex) => (
+                            <div key={groupIndex}>
+                                <ul>
+                                {Array.isArray(featureGroup) && featureGroup.map((feature, featureIndex) => (
+                                    feature?.value && feature?.name && (
+                                        <li key={`${groupIndex}-${featureIndex}`}>
+                                            <Typography variant="body1">
+                                                <b>{feature.name}</b>: {feature.value}
+                                            </Typography>
+                                        </li>
+                                    )
+                                ))}
+                                </ul>
+                            </div>
+                        ))
+                    ) : (
+                        <Typography variant="body1">No features available.</Typography>
+                    )}
                 </DialogContent>
             </Dialog>
         </Grid>

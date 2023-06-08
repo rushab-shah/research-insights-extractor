@@ -13,6 +13,8 @@ COPY output .
 WORKDIR /project/prompts
 COPY prompts .
 
+WORKDIR /project/UI/src/
+
 # Set the working directory in the container
 WORKDIR /project/app
 
@@ -48,14 +50,28 @@ RUN npm run build
 # Final image
 FROM python:3.10.7-alpine
 
+WORKDIR /project/datasources
+COPY datasources .
+
+WORKDIR /project/output
+COPY output .
+
+WORKDIR /project/prompts
+COPY prompts .
+
 # Set the working directory in the container
 WORKDIR /project
 
 # Copy the Python app from the python_builder stage
-COPY --from=python_builder /project /project
+COPY --from=python_builder /project/app ./app
 
 # Copy the built React app from the react_builder stage
-COPY --from=react_builder /project/UI/build /project/UI/build
+COPY --from=react_builder /project/UI ./UI
+
+COPY output/output.json UI/src/
+
+# Expose port 3000 for the React app
+EXPOSE 3000
 
 # Set the entrypoint command to start the React app
 CMD ["npm", "start"]
