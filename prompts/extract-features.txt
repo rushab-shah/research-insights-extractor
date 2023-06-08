@@ -4,13 +4,13 @@ Output is an Array of JSON objects. Each object is a feature. each Object repres
 
 name: This is a string that represents the name of the feature. For instance, it could be "Conclusion".
 
-value: This is the value of the feature. This field is always a singular item and cannot be a list. If there is a need to represent multiple categories or values for a single concept, separate feature objects should be created.
+value: This is the value of the feature. This field is always a singular item of type string and cannot be a list or an object. If there is a need to represent multiple categories or values for a single concept, separate feature objects should be created.
 
 mandatory: This is a boolean that signifies whether the feature is mandatory or optional. If the value is true, it indicates that the feature is mandatory; if the value is false, the feature is not mandatory.
 
 score: This is a number (likely a floating-point number) that denotes a confidence score. This score likely indicates the relevance or importance of the feature.
 
 The structure allows for an array of such features to be defined, and this could be extended as necessary.
-No talk, just output
+No talk, just output. Do not say anything about the output, just provide the JSON with no other talk.
 Output is strictly a JSON string whose structure is defined above. The output should not contain anything other than the JSON since the output will be directly loaded by a JSON loader.
 This is the text of the medical research paper:

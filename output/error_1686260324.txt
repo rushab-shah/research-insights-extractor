@@ -1,0 +1,46 @@
+Here is the output in JSON format:
+
+[
+  {
+    "name": "Conclusion",
+    "value": "Ever use of talcum powder in the genital area was associated with a 37% elevation in risk of EOC, which was statistically significant.",
+    "mandatory": true,
+    "score": 0.9
+  },
+  {
+    "name": "No. of Subjects",
+    "value": "Cases: 256, Controls: 1122",
+    "mandatory": true,
+    "score": 0.8
+  },
+  {
+    "name": "Relative Risk",
+    "value": "1.37 (1.02-1.85)",
+    "mandatory": true,
+    "score": 0.7
+  },
+  {
+    "name": "Length of Follow",
+    "value": "Not available",
+    "mandatory": true,
+    "score": 0.5
+  },
+  {
+    "name": "Timing of Talc Use",
+    "value": "This is relevant because it provides additional information about the relationship between talcum powder and EOC.",
+    "mandatory": false,
+    "score": 0.6
+  },
+  {
+    "name": "Histologic Subtype",
+    "value": "This is relevant because it suggests that the association between talcum powder use and EOC may be stronger in certain subtypes of the disease.",
+    "mandatory": false,
+    "score": 0.4
+  },
+  {
+    "name": "Adjusted Variables",
+    "value": "Age, race/ethnicity, duration of oral contraceptive use, and breast feeding were adjusted for in the multivariate analysis.",
+    "mandatory": false,
+    "score": 0.3
+  }
+]

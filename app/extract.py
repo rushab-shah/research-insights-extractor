@@ -3,8 +3,9 @@ Author: Rushab Shah
 Code: extract.py
 Purpose: To make API calls to gpt for all the chunks of given text and extract key features
 '''
-import requests
 import json
+import time
+import requests
 
 ##########
 API_KEY = "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"
@@ -64,16 +65,35 @@ def make_api_calls(paper_name,parsed_data):
             error_message = str(ex)  # Extract the error message from the exception
             print("Request failed with error:", error_message)
         if response.status_code==200:
-            # print(response.json())
             response_obj = response.json()
             # Modify code to extract JSON from response_obj["choices"][0]["message"]["content"]
             # You might have to parse the string to find where the JSON starts
-            features.append(json.loads(response_obj["choices"][0]["message"]["content"]))
+            content = response_obj["choices"][0]["message"]["content"]
+            try:
+                features.append(json.loads(content))
+            except Exception as ex:
+                create_error_log(ex,content)
         else:
             print(response.json())
             print(response.status_code)
     print("All features extracted for "+str(paper_name))
     return features
+
+def create_error_log(error,content):
+    """
+    Method to store errors while parsing response
+    """
+    # Generate timestamp for the error file name
+    timestamp = str(int(time.time()))
+
+    # Create the error message with the timestamp
+    error_message = f"Error: {str(error)}"
+    print(str(error_message))
+    # Write the error message to the error file
+    error_file = f"error_{timestamp}.txt"
+    with open(OUTPUT_PATH+error_file, "w") as f:
+        f.write(str(content))
+
 
 def load_parsed_data(filepath):
     """

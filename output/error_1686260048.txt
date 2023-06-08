@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Conclusion",
+        "value": "This medical research paper does not have any explicit conclusion.",
+        "mandatory": true,
+        "score": 1
+    },
+    {
+        "name": "No. of Subjects",
+        "value": 256,
+        "mandatory": true,
+        "score": 1
+    },
+    {
+        "name": "Relative Risk",
+        "value": null,
+        "mandatory": true,
+        "score": 0.5
+    },
+    {
+        "name": "Length of Follow",
+        "value": null,
+        "mandatory": true,
+        "score": 0.5
+    },
+    {
+        "name": "Response Fraction",
+        "value": 40,
+        "mandatory": false,
+        "score": 0.8
+    },
+    {
+        "name": "Histological Subtypes",
+        "value": [
+            {"subtype": "Serous", "interviewed": "57.4%", "noninterviewed": "45.6%"},
+            {"subtype": "Other Epithelial", "interviewed": "10.5%", "noninterviewed": "22%"},
+            {"subtype": "Mucinous", "interviewed": "14%", "noninterviewed": null},
+            {"subtype": "Endometrioid", "interviewed": "14%", "noninterviewed": null},
+            {"subtype": "Clear Cell", "interviewed": null, "noninterviewed": null},
+            {"subtype": "Other/Unclassified", "interviewed": null, "noninterviewed": null}
+        ],
+        "mandatory": false,
+        "score": 0.7
+    },
+    {
+        "name": "Percentage of Cases with Invasive Tumors",
+        "value": "71.1%",
+        "mandatory": false,
+        "score": 0.6
+    },
+    {
+        "name": "Percentage of Cases with Borderline Malignancy",
+        "value": "28.9%",
+        "mandatory": false,
+        "score": 0.6
+    },
+    {
+        "name": "Demographic Characteristics",
+        "value": {
+            "Cases": {
+                "Number of subjects": 256,
+                "Mean age at interview": 56.6,
+                "Age group (%)": {"40-49": 20, "50-59": 66, "60-69": 57, "70+": 56},
+                "Ethnicity (%)": {"White non-Hispanic": 74, "Hispanic": 18, "Other": 8},
+                "Education (%)": {"<High school graduate": 33, "High school graduate": 84, ">=High school graduate": 130},
+                "Marital status (%)": {"Single": 12.5, "Married": 44, "Divorced/separated": 44, "Widowed": null},
+                "Birthplace (%)": {"In United States": 87, "Outside United States": 13},
+            },
+            "Controls": {
+                "Number of subjects": 1122,
+                "Mean age at interview": 55,
+                "Age group (%)": {"40-49": 35, "50-59": 51.5, "60-69": 35.1, "70+": 25.9},
+                "Ethnicity (%)": {"White non-Hispanic": 54, "Hispanic": 27, "Other": 18},
+                "Education (%)": {"<High school graduate": 39.5, "High school graduate": 54, ">=High school graduate": 102},
+                "Marital status (%)": {"Single": 10, "Married": 39.4, "Divorced/separated": 37.9, "Widowed": 31.7},
+                "Birthplace (%)": {"In United States": 59, "Outside United States": 41},
+            }
+        },
+        "mandatory": false,
+        "score": 0.9
+    }
+]
