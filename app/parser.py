@@ -12,7 +12,7 @@ from extract import extract_features
 RAWDATA_PATH = "../datasources/raw-data"
 PROCESSED_DATA_PATH = "../datasources/processed-data/"
 PROCESSED_FILE_NAME = "preprocessed-data.json"
-CHUNK_SIZE = 6000
+CHUNK_SIZE = 5000
 PDF_TEXT_MAP = {}
 
 def parse(filepaths):
