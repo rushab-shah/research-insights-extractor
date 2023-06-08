@@ -60,7 +60,7 @@ def make_api_calls(paper_name,parsed_data):
             "messages": messages
         }
         try:
-            response = requests.post(URL, headers=HEADERS, json=request_body, timeout=180)
+            response = requests.post(URL, headers=HEADERS, json=request_body, timeout=240)
         except requests.exceptions.RequestException as ex:
             error_message = str(ex)  # Extract the error message from the exception
             print("Request failed with error:", error_message)
