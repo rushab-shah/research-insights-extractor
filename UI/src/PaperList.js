@@ -14,7 +14,12 @@ const PaperList = ({ papers }) => {
     return (
         <Container maxWidth="sm">
             {papers.map(paper => (
-                <PaperCard key={paper.id} paper={paper} expanded={expandedPaper === paper.id} onExpandClick={() => handleExpandClick(paper.id)} />
+                <PaperCard 
+                  key={paper.name} 
+                  paper={paper} 
+                  expanded={expandedPaper === paper.name} 
+                  onExpandClick={() => handleExpandClick(paper.name)} 
+                />
             ))}
         </Container>
     );

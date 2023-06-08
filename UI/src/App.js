@@ -14,7 +14,7 @@ const App = () => {
             // This is where you would fetch the papers from your API
             // const papersFromApi = await fetchYourPapersFromAPI();
             // For now, we are using the mock data
-            const papersFromApi = mockData.papers;
+            const papersFromApi = mockData;
             setPapers(papersFromApi);
         };
 

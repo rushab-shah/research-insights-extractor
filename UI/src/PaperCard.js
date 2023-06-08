@@ -7,16 +7,24 @@ const PaperCard = ({ paper, expanded, onExpandClick }) => {
     return (
         <div onClick={onExpandClick}>
             <Card style={{ marginBottom: '1rem', cursor: 'pointer' }}>
-                <CardHeader title={paper.title} />
+                <CardHeader title={paper.name} />
                 {expanded && (
                     <CardContent>
-                        {paper.features.map((feature, index) => (
-                            <div key={index}>
-                                <Typography variant="h6">{feature.name}</Typography>
-                                <Typography variant="body1">{feature.value}</Typography>
-                            </div>
-                        ))}
-                    </CardContent>
+                    <Typography variant="h6">Features</Typography>
+                    {paper.features.map((featureGroup, groupIndex) => (
+                      <div key={groupIndex}>
+                        <ul>
+                          {featureGroup.map((feature, featureIndex) => (
+                            <li key={featureIndex}>
+                              <Typography variant="body1">
+                               <b>{feature.name}</b>: {feature.value}
+                              </Typography>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </CardContent>                  
                 )}
             </Card>
         </div>
