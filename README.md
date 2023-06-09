@@ -96,3 +96,5 @@ The system currently has a few limitations that can be improved upon in future i
 - Handling of complex PDF layouts: Some research papers may have complex layouts which could affect the feature extraction.
 - Improve the speed of feature extraction: The extraction process can be made faster with optimized algorithms or parallel processing.
 - Expanding the set of features: The set of key features extracted can be expanded based on requirements.
+- Handling API Keys more securely: Currently we do not use any secure method of using API Keys. This will however change and more robust and secure methods can be applied
+- Ability to add more PDFs: Currently we work with the fixed set of PDFs that are provided. This can be easily extended to be able to dynamically add or delete new PDFs from the UI in the future.
