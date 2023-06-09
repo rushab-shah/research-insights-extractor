@@ -1,8 +1,8 @@
 # Use a base image with Python installed
-FROM python:3.10.7-alpine AS python_builder
+FROM python:3.10-slim-buster AS python_builder
 
 # Install build tools and dependencies for compiling native extensions
-RUN apk add --no-cache build-base libffi-dev
+RUN apt-get update && apt-get install -y build-essential libffi-dev poppler-utils
 
 # Set the working directory in the container
 WORKDIR /project/app
@@ -12,12 +12,11 @@ COPY ./app .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN apk add --no-cache poppler-utils
 
 # ---- #
 
 # Use a base image with Node.js installed
-FROM node:14.18.1-alpine AS react_builder
+FROM node:14.18.1-buster-slim AS react_builder
 
 # Set the working directory to the React app
 WORKDIR /project/UI
@@ -37,10 +36,10 @@ COPY ./UI .
 # ---- #
 
 # Final image
-FROM python:3.10.7-alpine
+FROM python:3.10-slim-buster
 
 # Install Node.js
-RUN apk add --update nodejs npm
+RUN apt-get update && apt-get install -y nodejs npm
 
 # Set Python's site-packages folder from python_builder image as the one in the final image
 COPY --from=python_builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
