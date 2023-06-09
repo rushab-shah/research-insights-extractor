@@ -22,15 +22,47 @@ JSON_URL = "https://api.jsonbin.io/v3/b/"
 JSON_KEY = "$2b$10$SLBgMhKNPW02.cj5pTQS5.qothtYp7kTnspUoSQDcesZ59.Z1zosG"
 BIN_ID = "64827d968e4aa6225eab6224"
 
+def access_cached_data():
+    """
+    TODO
+    """
+    headers = {
+        "X-Master-Key":JSON_KEY
+    }
+    response = requests.get(JSON_URL+BIN_ID, headers=headers, timeout=240)
+    if response.status_code==200:
+        resp = response.json()
+        return resp["record"]
+    else:
+        return None
+
+def get_cached_papers(cached_data):
+    """
+    TODO
+    """
+    cached_papers = {data["name"]: index for index, data in enumerate(cached_data)}
+    return cached_papers
+
+
 def extract_features(filepath):
     """
     TODO
     """
     parsed_data = load_parsed_data(filepath)
     result = []
+    cached_data = access_cached_data()
+    if cached_data is not None:
+        cached_papers = get_cached_papers(cached_data)
+    else:
+        cached_papers = None
     print("Processing papers...")
     for paper in tqdm(parsed_data, desc="Processing papers", ncols=70):
         # print("Processing paper "+str(paper))
+        if cached_papers is not None and paper in cached_papers:
+            cached_features = cached_data[cached_papers[str(paper)]]["features"]
+            if cached_features is not None and len(cached_features)>0:
+                result.append(paper_features)
+                continue
         paper_features = {
             "name":str(paper),
             "features":[]
@@ -137,20 +169,20 @@ def post_processing_result(result):
     for paper in result:
         merged_features = []
         feature_dict = {}
-
         for feature_group in paper["features"]:
             for feature in feature_group:
-                if feature["name"] not in feature_dict:
-                    if feature["value"]  not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
-                        feature_dict[feature["name"]] = str(feature["value"])
-                    else:
-                        feature_dict[feature["name"]] = ""
-                else:
-                    if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
-                        if feature_dict[feature["name"]]:  # Avoid trying to concatenate 'NoneType' and 'str'
-                            feature_dict[feature["name"]] += "; " + str(feature["value"])
-                        else:
+                if "name" in feature and "value" in feature:
+                    if feature["name"] not in feature_dict:
+                        if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
                             feature_dict[feature["name"]] = str(feature["value"])
+                        else:
+                            feature_dict[feature["name"]] = ""
+                    else:
+                        if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
+                            if feature_dict[feature["name"]]:  # Avoid trying to concatenate 'NoneType' and 'str'
+                                feature_dict[feature["name"]] += "; " + str(feature["value"])
+                            else:
+                                feature_dict[feature["name"]] = str(feature["value"])
 
         for name, value in feature_dict.items():
             merged_features.append({"name": name, "value": value})

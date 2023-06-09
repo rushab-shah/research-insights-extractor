@@ -49,7 +49,7 @@ def upload_screenshot(filepath):
     filename = get_filename_from_path(filepath)
     url_filename = make_url_friendly(filename)
     capture_screenshot(filepath,SNAPSHOT_LOCATION+url_filename+".jpg")
-    print("Uploading screenshot for "+filename)
+    # print("Uploading screenshot for "+filename)
     cloudinary.uploader.upload(SNAPSHOT_LOCATION+url_filename+".jpg", public_id = url_filename)
 
 def make_url_friendly(filename):
@@ -74,7 +74,7 @@ def capture_screenshot(pdf_path,output_path):
     """
     TODO
     """
-    print("Capturing screenshot for " + str(pdf_path))
+    # print("Capturing screenshot for " + str(pdf_path))
 
     # Open the PDF file
     with open(pdf_path, "rb") as file:
@@ -114,7 +114,6 @@ def get_filename_from_path(filepath):
     Method to extract a filename from its path. Resulting file name is without its extension
     """
     filename = os.path.splitext(os.path.basename(filepath))[0]
-    print(filename)
     return filename
 
 def save_to_txt():
