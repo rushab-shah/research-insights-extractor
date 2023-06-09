@@ -26,17 +26,7 @@
 .feature h3 {
     margin-bottom: 0.5em;
 }
-
-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 0.5em 1em;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-button:hover {
-    background-color: #0056b3;
+/* Background styles */
+body {
+    background-color: #F4A261; /* Orange */
 }
