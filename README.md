@@ -14,12 +14,12 @@ This repository contains code for an automated feature extraction system from me
 
 3) **Build Docker Image**: Navigate to the project directory from the terminal and run the following command to build the Docker image:
 
-```bash
+```bash```
 docker build -t research-analysis:latest .
 
 4) **Run Docker Container**: After the Docker image has been built, you can start the Docker container using the following command:
 
-```bash
+```bash```
 docker run -p <port>:3000 research-analysis:latest
 
 Replace <port> with the port number where you want to host the application.
