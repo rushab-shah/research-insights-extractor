@@ -58,12 +58,12 @@ def extract_features(filepath):
     print("Processing papers...")
     for paper in tqdm(parsed_data, desc="Processing papers", ncols=70):
         # print("Processing paper "+str(paper))
-        if cached_papers is not None and paper in cached_papers:
-            cached_features = cached_data[cached_papers[str(paper)]]["features"]
-            if cached_features is not None and len(cached_features)>0:
-                print("Paper already cached. Proceeding to next one")
-                result.append(cached_features)
-                continue
+        # if cached_papers is not None and paper in cached_papers:
+        #     cached_features = cached_data[cached_papers[str(paper)]]["features"]
+        #     if cached_features is not None and len(cached_features)>0:
+        #         print("Paper already cached. Proceeding to next one")
+        #         # result.append({"name": str(paper), "features": cached_features})
+        #         continue
         paper_features = {
             "name":str(paper),
             "features":[]
