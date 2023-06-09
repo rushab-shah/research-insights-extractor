@@ -3,43 +3,29 @@
 This repository contains code for an automated feature extraction system from medical literature. The program parses PDF files, specifically medical research papers, and utilizes the OpenAI GPT model to extract key features. These key features include, but are not limited to, conclusion, number of subjects, relative risk, length of follow-up etc. The output is generated in a structured JSON format.
 
 ## Prerequisites
-Before you begin, ensure you have met the following requirements:
-* You have installed Python 3.7 or later.
-* You have a Windows/Linux/Mac machine.
-* You have API access to OpenAI's GPT-3 or GPT-3.5 Turbo model.
 
-## Installation
-1. Clone the repository
+- Docker: The application is containerized using Docker, and requires Docker to be installed to run. You can download Docker [here](https://www.docker.com/products/docker-desktop).
 
-2. Navigate to the project directory
+## Installation & Usage
 
-3. Set Up a Virtual Environment
+1) **Install Docker Desktop**: Docker is used to build and run the containerized application. You can download it [here](https://www.docker.com/products/docker-desktop) and install it.
 
-    - Before installing the project dependencies, it's recommended to set up a virtual environment. This helps to keep the dependencies required by different projects separate from each other, and also aligns with best practices for Python development.
+2) **Check Docker Installation**: Make sure Docker is installed and running on your system. You can do this by running the command `docker -v` in the terminal/command prompt. If Docker is installed correctly, it should display the version.
 
-    - Here's how you can set up a virtual environment for this project:
+3) **Build Docker Image**: Navigate to the project directory from the terminal and run the following command to build the Docker image:
 
-    - Using venv (included in standard Python 3)
+```bash
+docker build -t research-analysis:latest .
 
-    - If you're using a standard installation of Python 3, you already have the `venv` module for creating virtual environments. Here's how you use it:
+4) **Run Docker Container**: After the Docker image has been built, you can start the Docker container using the following command:
 
-        1. Navigate to the project directory in your terminal.
-        2. Create a new virtual environment named 'env' (or another name of your choosing) using the following command:
-        
-        ```bash
-        python3 -m venv env
+```bash
+docker run -p <port>:3000 research-analysis:latest
 
-4. Install the required packages
-    ```bash
-    pip install -r requirements.txt
+Replace <port> with the port number where you want to host the application.
 
+5) **Wait for Data Processing**: Please note that starting the Docker container can take up to 20-30 minutes, as when the application starts, it builds the database of features by analyzing the input files one by one. You will see a progress bar in the terminal window. Once the progress is complete, all features have been extracted and the UI will start.
 
-## Usage
-1. Place your PDF files in the `datasources/raw-data` directory.
-2. Run the `parser.py` script to parse the PDF and break it down into manageable chunks. This will also save the parsed text into a local text file.
+6) **Access the Application**: Once the UI is up, you can access the application by opening a web browser and navigating to localhost:<port> where <port> is the port number you chose when starting the Docker container.
 
-    ```bash
-    python parser.py
-
-3. This script makes API calls to OpenAI's GPT model for each chunk of text and writes the result in the `output` directory.
-
+7) Exploring key features extracted from medical research papers!
