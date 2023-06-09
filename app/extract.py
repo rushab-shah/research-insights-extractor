@@ -94,7 +94,8 @@ def make_api_calls(paper_name,parsed_data):
         res= requests.get(JSON_URL+"648381329d312622a36d057a", headers=headers, timeout=240)
         if response.status_code==200:
             resp = res.json()
-            key = resp["key"]
+            record = resp["record"]
+            key = record["key"]
 
         headers = {'Authorization': 'Bearer '+key,'Accept':'application/json','Content-Type':'application/json'}
         try:
