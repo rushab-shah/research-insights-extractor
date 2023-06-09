@@ -14,18 +14,19 @@ This repository contains code for an automated feature extraction system from me
 
 3) **Build Docker Image**: Navigate to the project directory from the terminal and run the following command to build the Docker image:
 
-```bash```
+```bash
 docker build -t research-analysis:latest .
+```
 
 4) **Run Docker Container**: After the Docker image has been built, you can start the Docker container using the following command:
 
-```bash```
+```bash
 docker run -p <port>:3000 research-analysis:latest
-
-Replace <port> with the port number where you want to host the application.
+Replace <port> with the port number where you want to host the application
+```
 
 5) **Wait for Data Processing**: Please note that starting the Docker container can take up to 20-30 minutes, as when the application starts, it builds the database of features by analyzing the input files one by one. You will see a progress bar in the terminal window. Once the progress is complete, all features have been extracted and the UI will start.
 
 6) **Access the Application**: Once the UI is up, you can access the application by opening a web browser and navigating to localhost:<port> where <port> is the port number you chose when starting the Docker container.
 
-7) Exploring key features extracted from medical research papers!
+7) Explore key features extracted from medical research papers!
