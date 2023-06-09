@@ -61,7 +61,8 @@ def extract_features(filepath):
         if cached_papers is not None and paper in cached_papers:
             cached_features = cached_data[cached_papers[str(paper)]]["features"]
             if cached_features is not None and len(cached_features)>0:
-                result.append(paper_features)
+                print("Paper already cached. Proceeding to next one")
+                result.append(cached_features)
                 continue
         paper_features = {
             "name":str(paper),

@@ -38,8 +38,8 @@ COPY ./UI .
 # Final image
 FROM python:3.10-slim-buster
 
-# Install Node.js
-RUN apt-get update && apt-get install -y nodejs npm
+# Install Node.js and poppler-utils
+RUN apt-get update && apt-get install -y nodejs npm poppler-utils
 
 # Set Python's site-packages folder from python_builder image as the one in the final image
 COPY --from=python_builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
