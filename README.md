@@ -5,7 +5,7 @@ This repository contains code for an automated feature extraction system from me
 
 ## Prerequisites
 
-- Git: The application is maintained and developed using GitHub. A GitHub account & Git installation is required on your desktop. If you don't already have Git installed on your system, you can download it [here] (https://git-scm.com/downloads) and install it.
+- Git: The application is maintained and developed using GitHub. A GitHub account & Git installation is required on your desktop. If you don't already have Git installed on your system, you can download it [here](https://git-scm.com/downloads) and install it.
 - Docker: The application is containerized using Docker, and requires Docker to be installed to run. You can download Docker [here](https://www.docker.com/products/docker-desktop)
 
 ## Installation & Usage
