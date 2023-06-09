@@ -57,13 +57,13 @@ def extract_features(filepath):
         cached_papers = None
     print("Processing papers...")
     for paper in tqdm(parsed_data, desc="Processing papers", ncols=70):
-        # print("Processing paper "+str(paper))
-        # if cached_papers is not None and paper in cached_papers:
-        #     cached_features = cached_data[cached_papers[str(paper)]]["features"]
-        #     if cached_features is not None and len(cached_features)>0:
-        #         print("Paper already cached. Proceeding to next one")
-        #         # result.append({"name": str(paper), "features": cached_features})
-        #         continue
+        print("Processing paper "+str(paper))
+        if cached_papers is not None and paper in cached_papers:
+            cached_features = cached_data[cached_papers[str(paper)]]["features"]
+            if cached_features is not None and len(cached_features)>0:
+                print("Paper already cached. Proceeding to next one")
+                result.append({"name": str(paper), "features": cached_features})
+                continue
         paper_features = {
             "name":str(paper),
             "features":[]
@@ -101,7 +101,7 @@ def make_api_calls(paper_name,parsed_data):
             # You might have to parse the string to find where the JSON starts
             content = extract_json_from_content(response_obj["choices"][0]["message"]["content"])
             try:
-                features.append(json.loads(content))
+                features.extend(json.loads(content))
             except Exception as ex:
                 create_error_log(ex,content)
         else:
@@ -170,20 +170,19 @@ def post_processing_result(result):
     for paper in result:
         merged_features = []
         feature_dict = {}
-        for feature_group in paper["features"]:
-            for feature in feature_group:
-                if "name" in feature and "value" in feature:
-                    if feature["name"] not in feature_dict:
-                        if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
-                            feature_dict[feature["name"]] = str(feature["value"])
-                        else:
-                            feature_dict[feature["name"]] = ""
+        for feature in paper["features"]:
+            if "name" in feature and "value" in feature:
+                if feature["name"] not in feature_dict:
+                    if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
+                        feature_dict[feature["name"]] = str(feature["value"])
                     else:
-                        if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
-                            if feature_dict[feature["name"]]:  # Avoid trying to concatenate 'NoneType' and 'str'
-                                feature_dict[feature["name"]] += "; " + str(feature["value"])
-                            else:
-                                feature_dict[feature["name"]] = str(feature["value"])
+                        feature_dict[feature["name"]] = ""
+                else:
+                    if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
+                        if feature_dict[feature["name"]]:  # Avoid trying to concatenate 'NoneType' and 'str'
+                            feature_dict[feature["name"]] += "; " + str(feature["value"])
+                        else:
+                            feature_dict[feature["name"]] = str(feature["value"])
 
         for name, value in feature_dict.items():
             merged_features.append({"name": name, "value": value})
@@ -191,6 +190,7 @@ def post_processing_result(result):
         merged_papers.append({"name": paper["name"], "features": merged_features})
 
     return merged_papers
+
 
 
 def write_result(result):
