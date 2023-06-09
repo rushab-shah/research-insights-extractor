@@ -6,6 +6,7 @@ Purpose: To make API calls to gpt for all the chunks of given text and extract k
 import json
 import time
 import requests
+from tqdm import tqdm
 
 ##########
 API_KEY = "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"
@@ -25,38 +26,32 @@ def extract_features(filepath):
     """
     TODO
     """
-    print("Starting to extract features")
     parsed_data = load_parsed_data(filepath)
     result = []
-    for paper in parsed_data:
-        print("Processing paper "+str(paper))
+    print("Processing papers...")
+    for paper in tqdm(parsed_data, desc="Processing papers", ncols=70):
+        # print("Processing paper "+str(paper))
         paper_features = {
             "name":str(paper),
             "features":[]
         }
-        ## PROCESS
         paper_features["features"] = make_api_calls(paper,parsed_data)
         result.append(paper_features)
-    print("Features extracted. Saving output as JSON")
+    print("All features extracted.")
     write_result(result)
 
 def make_api_calls(paper_name,parsed_data):
     """
     Method to process and make API calls
     """
-    print("Started making API calls for "+str(paper_name))
+    # print("Started making API calls for "+str(paper_name))
     prompt = get_prompt()
     paper_chunk_data = parsed_data[paper_name]
     features = []
-    # count = 0
     no_of_chunks = len(paper_chunk_data)
     for i in range(0,no_of_chunks):
         messages = []
-        # count+=1
-        # if count==1:
         message_obj = {"role": "user", "content":prompt+preprocess_prompt(paper_chunk_data[i])}
-        # else:
-        #     message_obj = {"role": "user", "content":preprocess_prompt(paper_chunk_data[i])}
         messages.append(message_obj)
         request_body = {
             "model": TEXT_MODEL,
@@ -79,7 +74,7 @@ def make_api_calls(paper_name,parsed_data):
         else:
             print(response.json())
             print(response.status_code)
-    print("All features extracted for "+str(paper_name))
+    # print("All features extracted for "+str(paper_name))
     return features
 
 def extract_json_from_content(content):
@@ -101,7 +96,7 @@ def create_error_log(error,content):
 
     # Create the error message with the timestamp
     error_message = f"Error: {str(error)}"
-    print(str(error_message))
+    # print(str(error_message))
     # Write the error message to the error file
     error_file = f"error_{timestamp}.txt"
     with open(OUTPUT_PATH+error_file, "w") as f:
@@ -172,10 +167,8 @@ def write_result(result):
     post_processed_data = post_processing_result(result)
     with open(OUTPUT_PATH+'output.json','w') as file_object:
         file_object.write(json.dumps(post_processed_data))
-    # with open(UI_CONSUMPTION_PATH+'output.json','w') as file_object:
-    #     file_object.write(json.dumps(post_processed_data))
     send_to_json_store(post_processed_data)
-    print("Done!")
+    print("Terminating.")
 
 def send_to_json_store(data):
     """
@@ -189,5 +182,4 @@ def send_to_json_store(data):
     if response.status_code==200:
         print("Data stored online!")
     else:
-        # print(response.json())
         print(response.status_code)

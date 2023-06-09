@@ -6,12 +6,23 @@ Purpose: To read PDF files and extract text out of it and return it in a structu
 import glob
 import os
 import json
+import re
 from pdfminer.high_level import extract_text
 from extract import extract_features
+import cloudinary.uploader
+from PyPDF2 import PdfReader,PdfWriter
+from pdf2image import convert_from_path
+
+cloudinary.config( 
+  cloud_name = "dajjzo6cq",
+  api_key = "351438585191861",
+  api_secret = "cfR4pj1M3E-BOV1KFsrQjGiwqAk"
+)
 
 RAWDATA_PATH = "../datasources/raw-data"
 PROCESSED_DATA_PATH = "../datasources/processed-data/"
 PROCESSED_FILE_NAME = "preprocessed-data.json"
+SNAPSHOT_LOCATION = "../output/snapshots/"
 CHUNK_SIZE = 5000
 PDF_TEXT_MAP = {}
 
@@ -19,18 +30,75 @@ def parse(filepaths):
     """
     Parse a PDF file and return text in structured format
     """
-    print("Parsing...")
+    print("Reading Input Files ...")
     for filepath in filepaths:
         # For each research paper
-        print(filepath)
+        upload_screenshot(filepath)
         data = extract_text(filepath)
         data = data.strip().replace('\n', '\\n').replace('"', '\\"')
         break_into_chunks(data,filepath)
-    print("Parsed. Now saving preprocessed data")
+    print("Read Finished. Saving preprocessed data")
     save_to_txt()
-    print("Now starting the extraction phase")
+    print("Starting the feature extraction")
     extract_features(PROCESSED_DATA_PATH+PROCESSED_FILE_NAME)
 
+def upload_screenshot(filepath):
+    """
+    TODO
+    """
+    filename = get_filename_from_path(filepath)
+    url_filename = make_url_friendly(filename)
+    capture_screenshot(filepath,SNAPSHOT_LOCATION+url_filename+".jpg")
+    print("Uploading screenshot for "+filename)
+    cloudinary.uploader.upload(SNAPSHOT_LOCATION+url_filename+".jpg", public_id = url_filename)
+
+def make_url_friendly(filename):
+    """
+    TODO
+    """
+    # Convert to lowercase
+    filename = filename.lower()
+
+    # Remove leading and trailing whitespace
+    filename = filename.strip()
+
+    # Replace spaces with underscores
+    filename = filename.replace(" ", "_")
+
+    # Remove special characters
+    filename = re.sub(r'\W+', '', filename)
+    return filename
+
+
+def capture_screenshot(pdf_path,output_path):
+    """
+    TODO
+    """
+    print("Capturing screenshot for " + str(pdf_path))
+
+    # Open the PDF file
+    with open(pdf_path, "rb") as file:
+        pdf = PdfReader(file)
+        # Create a new PDF writer
+        writer = PdfWriter()
+
+        # If the file has more than one page, remove the rest
+        if len(pdf.pages) > 1:
+            writer.add_page(pdf.pages[0])
+
+        # Write the resulting PDF to a temporary file
+        temp_path = "temp.pdf"
+        with open(temp_path, "wb") as temp_file:
+            writer.write(temp_file)
+
+        # Convert the first page to an image
+        images = convert_from_path(temp_path)
+
+        # Save the first page image to file
+        images[0].save(output_path, 'JPEG')
+
+        # Delete the temporary PDF file
+        os.remove(temp_path)
 
 def break_into_chunks(pdf_string, filepath):
     """
