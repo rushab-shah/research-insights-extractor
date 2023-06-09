@@ -1,5 +1,3 @@
-// App.js
-
 import React from 'react';
 import PaperList from './PaperList';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,7 +5,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
-import papersData from './output.json';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -28,8 +25,18 @@ const App = () => {
 
     React.useEffect(() => {
         const fetchPapers = async () => {
-            const papersFromApi = papersData;
-            setPapers(papersFromApi);
+            try {
+                const response = await fetch('https://api.jsonbin.io/v3/b/64827d968e4aa6225eab6224', {
+                    method: 'GET',
+                    headers: {
+                      'X-Master-Key': '$2b$10$SLBgMhKNPW02.cj5pTQS5.qothtYp7kTnspUoSQDcesZ59.Z1zosG'
+                    }
+                });
+                const papersFromApi = await response.json();
+                setPapers(papersFromApi.record);
+            } catch (error) {
+                console.error("Error fetching papers: ", error);
+            }
         };
 
         fetchPapers();

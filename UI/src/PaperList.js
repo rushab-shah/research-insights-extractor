@@ -42,20 +42,16 @@ const PaperList = ({ papers }) => {
                 <DialogContent>
                     <Typography variant="h6">Features</Typography>
                     {selectedPaper?.features && selectedPaper.features.length > 0 ? (
-                        selectedPaper.features.map((featureGroup, groupIndex) => (
-                            <div key={groupIndex}>
-                                <ul>
-                                {Array.isArray(featureGroup) && featureGroup.map((feature, featureIndex) => (
-                                    feature?.value && feature?.name && (
-                                        <li key={`${groupIndex}-${featureIndex}`}>
-                                            <Typography variant="body1">
-                                                <b>{feature.name}</b>: {feature.value}
-                                            </Typography>
-                                        </li>
-                                    )
-                                ))}
-                                </ul>
+                        selectedPaper.features.map((feature, featureIndex) => (
+                            <ul>
+                            <div key={featureIndex}>
+                                <li>
+                                <Typography variant="body1">
+                                    <h4><b><u>{feature.name}:</u></b></h4> {typeof feature.value === 'boolean' ? feature.value ? 'True' : 'False' : feature.value}
+                                </Typography>
+                                </li>
                             </div>
+                            </ul>
                         ))
                     ) : (
                         <Typography variant="body1">No features available.</Typography>
