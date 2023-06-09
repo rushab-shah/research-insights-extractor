@@ -2,15 +2,25 @@
 
 This repository contains code for an automated feature extraction system from medical literature. The program parses PDF files, specifically medical research papers, and utilizes the OpenAI GPT model to extract key features. These key features include, but are not limited to, conclusion, number of subjects, relative risk, length of follow-up etc. The output is generated in a structured JSON format.
 
-![Alt text](./public/sample_image.png?raw=true "Optional Title")
 
 ## Prerequisites
 
-- Docker: The application is containerized using Docker, and requires Docker to be installed to run. You can download Docker [here](https://www.docker.com/products/docker-desktop).
-- Cloudinary: Cloudinary is used for storing snapshots of research papers. Sign up for a free account [here](https://cloudinary.com/users/register/free) and get your API key.
-- JSON Bin: For storing our feature data
+- Git: The application is maintained and developed using GitHub. A GitHub account & Git installation is required on your desktop. If you don't already have Git installed on your system, you can download it [here] (https://git-scm.com/downloads) and install it.
+- Docker: The application is containerized using Docker, and requires Docker to be installed to run. You can download Docker [here](https://www.docker.com/products/docker-desktop)
 
 ## Installation & Usage
+
+1) **Check Git Installation:** Make sure Git is installed and running on your system. You can do this by running the command git --version in the terminal/command prompt. If Git is installed correctly, it should display the version.
+
+2) **Clone Repository:** Once Git is installed, navigate to the directory where you want to clone the repository, then run the following command:
+```bash
+git clone https://github.com/rushab-shah/research-insights-extractor.git
+```
+
+3) **Navigate to Project Directory:** After cloning the repository, navigate into the project directory using the following command:
+```bash
+cd research-insights-extractor
+```
 
 1) **Install Docker Desktop**: Docker is used to build and run the containerized application. You can download it [here](https://www.docker.com/products/docker-desktop) and install it.
 
