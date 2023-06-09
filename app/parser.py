@@ -44,7 +44,7 @@ def parse(filepaths):
 
 def upload_screenshot(filepath):
     """
-    TODO
+    This method is responsible for uploading the snapshot of research papers to cloudinary
     """
     filename = get_filename_from_path(filepath)
     url_filename = make_url_friendly(filename)
@@ -54,7 +54,7 @@ def upload_screenshot(filepath):
 
 def make_url_friendly(filename):
     """
-    TODO
+    This method is responsible for making a filename URL friendly
     """
     # Convert to lowercase
     filename = filename.lower()
@@ -72,7 +72,7 @@ def make_url_friendly(filename):
 
 def capture_screenshot(pdf_path,output_path):
     """
-    TODO
+    This method is responsible for capturing the screenshot of the first page of a PDF and saving it
     """
     # print("Capturing screenshot for " + str(pdf_path))
 
@@ -126,14 +126,14 @@ def save_to_txt():
 
 def get_paper_list():
     """
-    TODO
+    This method is responsible to get a list of PDF file paths to be processed
     """
     pdf_files = glob.glob(RAWDATA_PATH + '/*.pdf')
     return pdf_files
 
 def main():
     """
-    Main method
+    Main method. Serves as Entry point
     """
     # Get List of Files
     # Pass it to parse

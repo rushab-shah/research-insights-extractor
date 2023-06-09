@@ -24,7 +24,7 @@ BIN_ID = "64827d968e4aa6225eab6224"
 
 def access_cached_data():
     """
-    TODO
+    This method is responsible for accesing and returning stored feature data
     """
     headers = {
         "X-Master-Key":JSON_KEY
@@ -38,7 +38,7 @@ def access_cached_data():
 
 def get_cached_papers(cached_data):
     """
-    TODO
+    This method is responsible for returning a dictionary of paper names and their respective index in the cached data array
     """
     cached_papers = {data["name"]: index for index, data in enumerate(cached_data)}
     return cached_papers
@@ -46,7 +46,7 @@ def get_cached_papers(cached_data):
 
 def extract_features(filepath):
     """
-    TODO
+    This method is responsible for getting features out of pdf files. Filepath is the path to the PDF file
     """
     parsed_data = load_parsed_data(filepath)
     result = []
@@ -58,9 +58,12 @@ def extract_features(filepath):
     print("Processing papers...")
     for paper in tqdm(parsed_data, desc="Processing papers", ncols=70):
         print("Processing paper "+str(paper))
+
+        #First we check if the data is already processed and stored before
         if cached_papers is not None and paper in cached_papers:
             cached_features = cached_data[cached_papers[str(paper)]]["features"]
             if cached_features is not None and len(cached_features)>0:
+                # If yes, we don't process it again
                 print("Paper already cached. Proceeding to next one")
                 result.append({"name": str(paper), "features": cached_features})
                 continue
@@ -68,6 +71,7 @@ def extract_features(filepath):
             "name":str(paper),
             "features":[]
         }
+        # Here we make API calls to get the features
         paper_features["features"] = make_api_calls(paper,parsed_data)
         result.append(paper_features)
     print("All features extracted.")
@@ -75,7 +79,7 @@ def extract_features(filepath):
 
 def make_api_calls(paper_name,parsed_data):
     """
-    Method to process and make API calls
+    Method to process and make API calls to Open AI GPT
     """
     # print("Started making API calls for "+str(paper_name))
     prompt = get_prompt()
@@ -112,7 +116,7 @@ def make_api_calls(paper_name,parsed_data):
 
 def extract_json_from_content(content):
     """
-    TODO
+    Purpose of this method to remove unecessary characters from a JSON string
     """
     opening_bracket_index = content.find('[')
     if opening_bracket_index != -1:
@@ -157,7 +161,7 @@ def get_prompt():
 
 def preprocess_prompt(prompt_str):
     """
-    TODO
+    Method to pre process the prompt string to make it request friendly
     """
     preprocessed_str = prompt_str.strip()
     return preprocessed_str
@@ -205,7 +209,7 @@ def write_result(result):
 
 def send_to_json_store(data):
     """
-    TODO
+    This method is responsible for sending the feature data to the JSON Bin online JSON store
     """
     headers = {
         "Content-Type":"application/json",
