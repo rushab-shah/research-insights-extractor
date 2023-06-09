@@ -49,9 +49,29 @@ The project has been organized into a number of directories and files. A brief d
 The output of the analysis will be a structured JSON file where each research paper corresponds to a JSON object with key features extracted. This is turned is presented in a user friendly manner on the UI.
 
 ## Approach
-This system uses a combination of text extraction from PDF files, natural language processing with OpenAI's GPT, and feature extraction algorithms to generate a structured output from medical research papers.
+This system uses a combination of text extraction from PDF files, natural language processing & feature extraction with OpenAI's GPT to generate a structured output from medical research papers. The frontend is built with ReactJS and Material-UI, while the backend is Python based, all packaged within Docker for easy deployment. Let's talk about the approach in detail:
 
-The frontend is built with ReactJS and Material-UI, while the backend is Python based, all packaged within Docker for easy deployment.
+### Input
+The input is a set of PDFs stored in the datasources/raw-data folder of our project.
+
+### Steps
+**Reading the Input & Preprocessing**
+    1) Read the PDF files
+    2) Capture snapshots of each file and store them for usage in UI
+    3) Parse each PDF file and divide the text data into chunks
+    4) Store this data as a dictionary of pdf file and its list of chunks
+
+**Extracting features & Caching**
+    1) For each PDF file we first identify if we've already stored its feature data in the online JSON database
+    2) If yes, we don't process it further and simply reuse the existing feature data
+    3) If no, then we proceed to make a REST API call to OpenAI GPT API, with help of a custom fine tuned prompt to extract features from the specific chunk of PDF text data.
+    4) This prompt is designed to give output strictly in JSON format and only with feature data.
+    5) We combine features observed in each chunk and assign all features to the respective PDF file
+    6) Once this process is completed for all PDF files, we store the data in the JSON online store JSON Bin using REST endpoints.
+
+<!-- **Consuming the data in UI and presenting the same**
+    1) -->
+
 
 ## Scope for Improvement
 The system currently has a few limitations that can be improved upon in future iterations:
