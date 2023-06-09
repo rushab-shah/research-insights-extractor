@@ -22,8 +22,8 @@ docker build -t research-analysis:latest .
 
 ```bash
 docker run -p <port>:3000 research-analysis:latest
-Replace <port> with the port number where you want to host the application
 ```
+Replace <port> with the port number where you want to host the application
 
 5) **Wait for Data Processing**: Please note that starting the Docker container can take up to 20-30 minutes, as when the application starts, it builds the database of features by analyzing the input files one by one. You will see a progress bar in the terminal window. Once the progress is complete, all features have been extracted and the UI will start.
 
