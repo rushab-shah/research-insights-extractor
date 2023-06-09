@@ -12,7 +12,7 @@ COPY ./app .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN sudo apk add poppler-utils
+RUN apk add poppler-utils
 
 # ---- #
 
