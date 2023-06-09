@@ -8,12 +8,7 @@ import time
 import requests
 from tqdm import tqdm
 
-##########
-API_KEY = "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"
-##########
-
 URL="https://api.openai.com/v1/chat/completions"
-HEADERS = {'Authorization': 'Bearer '+API_KEY,'Accept':'application/json','Content-Type':'application/json'}
 OUTPUT_PATH = "../output/"
 UI_CONSUMPTION_PATH = "../UI/public/"
 PROMPT_PATH = "../prompts/"
@@ -94,8 +89,16 @@ def make_api_calls(paper_name,parsed_data):
             "model": TEXT_MODEL,
             "messages": messages
         }
+        ## FETCH API KEY HERE
+        key = ""
+        res= requests.get(JSON_URL+"648381329d312622a36d057a", headers=headers, timeout=240)
+        if response.status_code==200:
+            resp = res.json()
+            key = resp["key"]
+
+        headers = {'Authorization': 'Bearer '+key,'Accept':'application/json','Content-Type':'application/json'}
         try:
-            response = requests.post(URL, headers=HEADERS, json=request_body, timeout=240)
+            response = requests.post(URL, headers=headers, json=request_body, timeout=240)
         except requests.exceptions.RequestException as ex:
             error_message = str(ex)  # Extract the error message from the exception
             print("Request failed with error:", error_message)
