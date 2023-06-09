@@ -14,9 +14,12 @@ API_KEY = "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"
 URL="https://api.openai.com/v1/chat/completions"
 HEADERS = {'Authorization': 'Bearer '+API_KEY,'Accept':'application/json','Content-Type':'application/json'}
 OUTPUT_PATH = "../output/"
-UI_CONSUMPTION_PATH = "../UI/src/"
+UI_CONSUMPTION_PATH = "../UI/public/"
 PROMPT_PATH = "../prompts/"
 TEXT_MODEL = "gpt-3.5-turbo"
+JSON_URL = "https://api.jsonbin.io/v3/b/"
+JSON_KEY = "$2b$10$SLBgMhKNPW02.cj5pTQS5.qothtYp7kTnspUoSQDcesZ59.Z1zosG"
+BIN_ID = "64827d968e4aa6225eab6224"
 
 def extract_features(filepath):
     """
@@ -68,7 +71,7 @@ def make_api_calls(paper_name,parsed_data):
             response_obj = response.json()
             # Modify code to extract JSON from response_obj["choices"][0]["message"]["content"]
             # You might have to parse the string to find where the JSON starts
-            content = response_obj["choices"][0]["message"]["content"]
+            content = extract_json_from_content(response_obj["choices"][0]["message"]["content"])
             try:
                 features.append(json.loads(content))
             except Exception as ex:
@@ -78,6 +81,16 @@ def make_api_calls(paper_name,parsed_data):
             print(response.status_code)
     print("All features extracted for "+str(paper_name))
     return features
+
+def extract_json_from_content(content):
+    """
+    TODO
+    """
+    opening_bracket_index = content.find('[')
+    if opening_bracket_index != -1:
+        return content[opening_bracket_index:]
+    else:
+        return content
 
 def create_error_log(error,content):
     """
@@ -121,12 +134,60 @@ def preprocess_prompt(prompt_str):
     preprocessed_str = prompt_str.strip()
     return preprocessed_str
 
+def post_processing_result(result):
+    """
+    Method for post processing the feature array for each paper.
+    """
+    merged_papers = []
+    for paper in result:
+        merged_features = []
+        feature_dict = {}
+
+        for feature_group in paper["features"]:
+            for feature in feature_group:
+                if feature["name"] not in feature_dict:
+                    if feature["value"]  not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
+                        feature_dict[feature["name"]] = str(feature["value"])
+                    else:
+                        feature_dict[feature["name"]] = ""
+                else:
+                    if feature["value"] not in [None, "N/A", "Not mentioned", "Not provided in the text","Not provided","not provided","Not explicitly mentioned."]:
+                        if feature_dict[feature["name"]]:  # Avoid trying to concatenate 'NoneType' and 'str'
+                            feature_dict[feature["name"]] += "; " + str(feature["value"])
+                        else:
+                            feature_dict[feature["name"]] = str(feature["value"])
+
+        for name, value in feature_dict.items():
+            merged_features.append({"name": name, "value": value})
+
+        merged_papers.append({"name": paper["name"], "features": merged_features})
+
+    return merged_papers
+
+
 def write_result(result):
     """
     Storing result
     """
+    post_processed_data = post_processing_result(result)
     with open(OUTPUT_PATH+'output.json','w') as file_object:
-        file_object.write(json.dumps(result))
-    with open(UI_CONSUMPTION_PATH+'output.json','w') as file_object:
-        file_object.write(json.dumps(result))
+        file_object.write(json.dumps(post_processed_data))
+    # with open(UI_CONSUMPTION_PATH+'output.json','w') as file_object:
+    #     file_object.write(json.dumps(post_processed_data))
+    send_to_json_store(post_processed_data)
     print("Done!")
+
+def send_to_json_store(data):
+    """
+    TODO
+    """
+    headers = {
+        "Content-Type":"application/json",
+        "X-Master-Key":JSON_KEY
+    }
+    response = requests.put(JSON_URL+BIN_ID, headers=headers, json=data,timeout=60)
+    if response.status_code==200:
+        print("Data stored online!")
+    else:
+        # print(response.json())
+        print(response.status_code)
