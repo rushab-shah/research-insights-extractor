@@ -55,22 +55,29 @@ This system uses a combination of text extraction from PDF files, natural langua
 The input is a set of PDFs stored in the datasources/raw-data folder of our project.
 
 ### Steps
-**Reading the Input & Preprocessing**
-    1) Read the PDF files
-    2) Capture snapshots of each file and store them for usage in UI
-    3) Parse each PDF file and divide the text data into chunks
-    4) Store this data as a dictionary of pdf file and its list of chunks
+**Reading the Input & Preprocessing:**
 
-**Extracting features & Caching**
-    1) For each PDF file we first identify if we've already stored its feature data in the online JSON database
-    2) If yes, we don't process it further and simply reuse the existing feature data
-    3) If no, then we proceed to make a REST API call to OpenAI GPT API, with help of a custom fine tuned prompt to extract features from the specific chunk of PDF text data.
-    4) This prompt is designed to give output strictly in JSON format and only with feature data.
-    5) We combine features observed in each chunk and assign all features to the respective PDF file
-    6) Once this process is completed for all PDF files, we store the data in the JSON online store JSON Bin using REST endpoints.
+- Read the PDF files
+- Capture snapshots of each file and store them in the online image store, cloudinary for usage in UI via REST endpoints
+- Parse each PDF file and divide the text data into chunks
+- Store this data as a dictionary of pdf file and its list of chunks
 
-<!-- **Consuming the data in UI and presenting the same**
-    1) -->
+**Extracting features & Caching:**
+
+- For each PDF file we first identify if we've already stored its feature data in the online JSON database
+- If yes, we don't process it further and simply reuse the existing feature data
+- If no, then we proceed to make a REST API call to OpenAI GPT API, with help of a custom fine tuned prompt to extract features from the specific chunk of PDF text data.
+- This prompt is designed to give output strictly in JSON format and only with feature data.
+- We combine features observed in each chunk and assign all features to the respective PDF file
+- Once this process is completed for all PDF files, we store the data in the JSON online store JSON Bin using REST endpoints.
+
+**Presenting the data:**
+
+- Once the backend tasks are done, the UI app is started
+- The UI upon startup, loads the JSON feature data from JSON bin
+- Then it displays each PDF file as a card in the UI
+- Each card has the thumbnail of the PDF snapshot that we stored using the Python backend earlier which is loaded from cloudinary
+- Each PDF card is clickable. Upon clicking a modal dialogue opens up showing a list of key features extracted from the PDF.
 
 
 ## Scope for Improvement
